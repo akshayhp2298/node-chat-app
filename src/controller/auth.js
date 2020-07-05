@@ -1,6 +1,6 @@
-import mongoDB from "../../MongoDB";
+import mongoDB from "../MongoDB";
 
-import { getUserByEmail, createUser } from "../../MongoDB/queries/user";
+import { getUserByEmail, createUser } from "../MongoDB/queries/user";
 
 export const loginController = async (req, res) => {
   const { email, password } = req.body;

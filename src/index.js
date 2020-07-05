@@ -1,20 +1,22 @@
-require('dotenv').config()
-const express = require("express");
-const socketio = require("socket.io");
-const http = require("http");
-const cors = require("cors");
+import "dotenv/config";
+import express from "express";
+import socketio from "socket.io";
+import http from "http";
+import cors from "cors";
+import router from "./routes/router";
+import auth from "./routes/auth";
+import bodyParser from "body-parser";
+
+import { addUser, removeUser, getUser, getUsersInRoom } from "./users";
 const PORT = process.env.PORT || 5000;
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-const router = require("./src/routes/router");
-const auth = require("./src/routes/auth");
-const bodyParser = require('body-parser')
 
-const { addUser, removeUser, getUser, getUsersInRoom } = require("./users");
-
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use(cors());
+app.use(router);
+app.use("/auth", auth);
 
 io.on("connection", socket => {
   console.log("we have a new connection");
@@ -71,9 +73,6 @@ io.on("connection", socket => {
     }
   });
 });
-
-app.use(router);
-app.use('/auth',auth);
 
 server.listen(PORT, () => {
   console.log("server is running on ", PORT);
