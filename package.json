@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon ./src/index.js --exec babel-node --presets babel-preset-env",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "cleanup": "rimraf build",
+    "cleanup": "rm -rf build",
     "compile": "babel --copy-files src -d build",
     "build": "npm run cleanup && npm run compile"
   },
