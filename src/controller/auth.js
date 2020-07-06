@@ -1,5 +1,5 @@
 import mongoDB from "../MongoDB";
-import uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 import { getUserByEmail, createUser } from "../MongoDB/queries/user";
 import { getToken } from "../middleware/auth";
 
@@ -26,7 +26,7 @@ export const loginController = async (req, res) => {
 
 export const signupController = async (req, res) => {
   const { name, dob, email, password } = req.body;
-  const userId = uuid();
+  const userId = uuidv4();
   const user = await createUser(mongoDB, {
     userId,
     name,
