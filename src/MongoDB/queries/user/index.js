@@ -7,3 +7,6 @@ export const getUserByEmail = (mongoDB, email) =>
 
 export const createUser = (mongoDB, user) =>
   mongoDB.db("chatApp").collection(collection).insertOne(user);
+
+export const getUserById = (mongoDB, userId) =>
+  mongoDB.db("chatApp").collection(collection).findOne({ userId });

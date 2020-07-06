@@ -10,7 +10,10 @@ export const validateLogin = async (req, res, next) => {
     error = true;
     messages.push({ field: "password", message: "password not found" });
   }
-  if (error) res.status(400).send({ error, message: messages });
+  if (error) {
+    res.status(400).send({ error, message: messages });
+    return;
+  }
   next();
 };
 
@@ -40,6 +43,9 @@ export const validateSignup = async (req, res, next) => {
       messages.push({ field: "dob", message: "dob is not valid" });
     }
   }
-  if (error) res.status(400).send({ error, message: messages });
+  if (error) {
+    res.status(400).send({ error, message: messages });
+    return;
+  }
   next();
 };

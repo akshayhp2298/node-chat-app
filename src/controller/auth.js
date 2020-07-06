@@ -1,13 +1,24 @@
 import mongoDB from "../MongoDB";
-
+import uuid from "uuid";
 import { getUserByEmail, createUser } from "../MongoDB/queries/user";
+import { getToken } from "../middleware/auth";
 
 export const loginController = async (req, res) => {
   const { email, password } = req.body;
   const user = await getUserByEmail(mongoDB, email);
-  if (user && user.password === password)
-    res.send({ error: false, message: "user has been loggedin" });
-  else
+  if (user && user.password === password) {
+    const token = getToken({
+      name: user.name,
+      email: user.email,
+      userId: user.userId,
+    });
+    res.send({
+      error: false,
+      message: "user has been loggedin",
+      token: `Bearer ${token}`,
+    });
+    // return;
+  } else
     res
       .status(400)
       .send({ error: true, message: "emailID or password is not valid" });
@@ -15,11 +26,18 @@ export const loginController = async (req, res) => {
 
 export const signupController = async (req, res) => {
   const { name, dob, email, password } = req.body;
+  const userId = uuid();
   const user = await createUser(mongoDB, {
+    userId,
     name,
     dob: new Date(dob),
     email,
     password,
   });
-  res.send({ error: false, message: "user has been created", user });
+  const token = getToken({
+    userId,
+    name,
+    email,
+  });
+  res.send({ error: false, message: "user has been created", token });
 };
